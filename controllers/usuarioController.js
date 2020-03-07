@@ -1,3 +1,3 @@
 exports.crearUsuario = (req, res) => {
-  console.log("receo");
+  console.log(req.body);
 };
