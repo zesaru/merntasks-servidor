@@ -9,6 +9,7 @@ exports.autenticarUsuario = async (req, res) => {
   if (!errores.isEmpty()) {
     return res.status(400).json({ errores: errores.array() });
   }
+
   // extraer el email y password
   const { email, password } = req.body;
 
@@ -37,7 +38,7 @@ exports.autenticarUsuario = async (req, res) => {
       payload,
       process.env.SECRETA,
       {
-        expiresIn: 36000000 // 1 hora
+        expiresIn: 3600 // 1 hora
       },
       (error, token) => {
         if (error) throw error;
@@ -54,7 +55,7 @@ exports.autenticarUsuario = async (req, res) => {
 // Obtiene que usuario esta autenticado
 exports.usuarioAutenticado = async (req, res) => {
   try {
-    const usuario = await Usuario.findById(req.usuario.id);
+    const usuario = await Usuario.findById(req.usuario.id).select("-password");
     res.json({ usuario });
   } catch (error) {
     console.log(error);
